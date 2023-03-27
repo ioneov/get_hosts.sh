@@ -6,6 +6,6 @@ The bash script used for scan and parse IP-addresses, ports and MAC-addresses fo
 
 ## Usage
 
-![My Image](pics/ex_1.PNG)
+![My Image](pics/ex_2.PNG)
 
 
