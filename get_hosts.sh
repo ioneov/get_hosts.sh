@@ -51,9 +51,9 @@ function active () {
 
 echo "[*] Getting active addresses..."
 
-if [ "$arg_input" == "N" ] && [ "arg_target" != "N" ]
+if [ "$arg_input" == "N" ]
 	then nmap -sn $arg_target 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" > temporary-ips.txt
-elif [ "$arg_input" != "N" ] && [ "arg_target" == "N" ]
+elif [ "$arg_input" != "N" ]
 	then nmap -sn -iL $arg_input 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" > temporary-ips.txt
 else
 	echo "[*] Unknown error..."
