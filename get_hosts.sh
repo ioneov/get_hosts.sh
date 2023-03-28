@@ -1,15 +1,20 @@
 #!/bin/bash
 fname="get_hosts.sh"
-version="0.1"
+version="0.2"
+repo="https://github.com/ioneov/get_hosts.sh"
 
 # Menu Switches
 arg_target="N"
 arg_input="N"
 arg_output="N"
 
+# Variables
+NAME_SUFFIX=`/bin/date +\%d-\%m-\%Y-\%H:\%M:\%S`
+
 function header () {
 # header function  - used to print out the title of the script
 
+echo "--------------------------------------------------------------------------------------"
 echo -e "\e[1m  ________        __      ___ ___                 __          "
 echo " /  _____/  _____/  |_   /   |   \  ____  _______/  |_  ______"
 echo "/   \  ____/ __ \   __\ /    ~    \/  _ \/  ___/\   __\/  ___/"
@@ -17,8 +22,9 @@ echo "\    \_\  \  ___/|  |   \    Y    (  <_> )___ \  |  |  \___ \ "
 echo " \______  /\___  >__|____\___|_  / \____/____  > |__| /____  >"
 echo "        \/     \/  /_____/     \/            \/            \/ "
 echo " "
-echo -e "\e[39m\e[0m\e[96mVersion: $version"
+echo -e "\e[39m\e[0m\e[96mVersion: $version\tRepository: $repo"
 echo ""
+echo "--------------------------------------------------------------------------------------"
 }
 
 function helpmenu () {
@@ -51,30 +57,36 @@ function active () {
 
 echo "[*] Getting active addresses..."
 
-if [ "$arg_input" == "N" ]
-	then nmap -sn $arg_target 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" > temporary-ips.txt
+if [ "$arg_target" != "N" ]
+	then nmap -sn -T4 $arg_target 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" >> temporary-ips-$NAME_SUFFIX.txt # nmap ping
 elif [ "$arg_input" != "N" ]
-	then nmap -sn -iL $arg_input 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" > temporary-ips.txt
+	then nmap -sn -T4 -iL $arg_input 2> /dev/null | grep -Eo "Nmap scan report.*" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" >> temporary-ips-$NAME_SUFFIX.txt # nmap ping
+	# then fping -f $arg_input 2> /dev/null| grep "is alive" | awk '{print $1}' >> temporary-ips-$NAME_SUFFIX.txt # fping ping
 else
 	echo "[*] Unknown error..."
+fi
+
+if [ "$arg_output" == "N" ]
+	then echo "--------------------------------------------------------------------------------------";echo -e "ip\tports\tmac";
+		echo "--------------------------------------------------------------------------------------"
 fi
 
 while read line;do
 	if [ "$arg_output" != "N" ]
 		then  echo "[*] Getting ports for $line...";
-		        nmap -p1-65535 --open -n -T4 $line | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' > temporary-$line-ports.txt;
+		        nmap -p1-65535 --open -n -T4 $line | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' > temporary-$line-ports-$NAME_SUFFIX.txt;
         		echo "[*] Getting MAC-address for $line...";
-		        nmap -n -T4 $line | grep MAC | awk '{print $3}' > temporary-$line-mac.txt;
-			echo -e "$line\t$(cat temporary-$line-ports.txt)\t$(cat temporary-$line-mac.txt)" >> $arg_output
+		        nmap -n -T4 $line | grep MAC | awk '{print $3}' > temporary-$line-mac-$NAME_SUFFIX.txt;
+			echo -e "$line\t$(cat temporary-$line-ports-$NAME_SUFFIX.txt)\t$(cat temporary-$line-mac-$NAME_SUFFIX.txt)" >> $arg_output
 	elif [ "$arg_output" == "N" ]
-		then nmap -p1-65535 --open -n -T4 $line | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed -e "s/,$//g" > temporary-$line-ports.txt;
-			nmap -n -T4 $line | grep MAC | awk '{print $3}' > temporary-$line-mac.txt;
-			echo -e "$line\t$(cat temporary-$line-ports.txt)\t$(cat temporary-$line-mac.txt)"
+		then nmap -p1-65535 --open -n -T4 $line | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed -e "s/,$//g" > temporary-$line-ports-$NAME_SUFFIX.txt;
+			nmap -n -T4 $line | grep MAC | awk '{print $3}' > temporary-$line-mac-$NAME_SUFFIX.txt;
+			echo -e "$line\t$(cat temporary-$line-ports-$NAME_SUFFIX.txt)\t$(cat temporary-$line-mac-$NAME_SUFFIX.txt)"
 	else
 		echo "[*] Unknown error..."
 	fi
 	rm temporary-*
-done < temporary-ips.txt
+done < temporary-ips-$NAME_SUFFIX.txt
 
 echo "[*] Done..."
 }
