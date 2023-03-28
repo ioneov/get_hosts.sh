@@ -8,4 +8,6 @@ The bash script used for scan and parse IP-addresses, ports and MAC-addresses fo
 
 ![My Image](pics/ex_2.PNG)
 
+## Result
 
+![My Image](pics/ex_3.PNG)
