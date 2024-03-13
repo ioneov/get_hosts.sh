@@ -18,4 +18,4 @@ Parsing Include:
 
 |||
 |--|--|
-|<img src="pics/ex_1.PNG" alt="ex_1" width="200"/>|<img src="pics/ex_3.PNG" alt="ex_2" width="200"/>|
+|<img src="pics/ex_1.PNG" alt="ex_1" height="200"/>|<img src="pics/ex_3.PNG" alt="ex_2" height="200"/>|
