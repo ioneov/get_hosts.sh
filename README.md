@@ -12,7 +12,7 @@ Parsing Include:
 
 ## Usage
 
-![My Image](pics/ex_1.PNG)
+<img src="pics/ex_1.PNG" alt="ex_1" width="200"/>
 
 ## Result
 
@@ -20,4 +20,4 @@ Parsing Include:
 ./get_hosts.sh --target 192.168.0.2
 ```
 
-![My Image](pics/ex_1.PNG)
+<img src="pics/ex_2.PNG" alt="ex_2" width="200"/>
