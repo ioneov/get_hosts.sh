@@ -10,14 +10,12 @@ Parsing Include:
 - MAC-address
 - NetBIOS-name
 
-## Usage
-
-<img src="pics/ex_1.PNG" alt="ex_1" width="200"/>
-
-## Result
+## Usage and Result
 
 ```bash
 ./get_hosts.sh --target 192.168.0.2
 ```
 
-<img src="pics/ex_2.PNG" alt="ex_2" width="200"/>
+|||
+|--|--|
+|<img src="pics/ex_1.PNG" alt="ex_1" width="200"/>|<img src="pics/ex_3.PNG" alt="ex_2" width="200"/>|
