@@ -6,7 +6,7 @@ Parsing Include:
 
 - IP-address
 - open TCP ports
-- opne UDP ports	
+- open UDP ports	
 - MAC-address
 - NetBIOS-name
 
